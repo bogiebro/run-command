@@ -39,6 +39,7 @@ class CommandRunnerView extends View
       @commandRunner.kill()
       delete @commandRunner
 
+    console.log('command')
     @commandRunner = new CommandRunner(command, @render)
     @commandRunner.runCommand()
     @showPanel()

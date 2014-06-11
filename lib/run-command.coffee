@@ -3,7 +3,6 @@ CommandRunnerView = require './command-runner-view'
 
 module.exports =
   configDefaults:
-    precedeCommandsWith: 'source $HOME/.bash_profile'
     snapCommandResultsToBottom: true
 
   runCommandView: null

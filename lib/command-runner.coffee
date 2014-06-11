@@ -6,7 +6,7 @@ class CommandRunner
   commandResult: ''
 
   constructor: (command, callback)->
-    @command = command
+    @command = command.replace('%', '$ATOM_FILE')
     @callback = callback
 
   collectResults: (output) =>
@@ -17,10 +17,12 @@ class CommandRunner
     @returnCallback()
 
   processParams: ->
-    command: '/bin/bash'
-    args: ['-c', @addPrecedentCommand(@command)]
+    command: '/usr/local/bin/fish'
+    args: ['-c', @command]
     options:
       cwd: atom.project.getPath()
+      env:
+        ATOM_FILE: atom.workspace.getActiveEditor().getPath()
     stdout: @collectResults
     stderr: @collectResults
     exit: @exit
@@ -36,15 +38,6 @@ class CommandRunner
   kill: ->
     if @process?
       @process.kill()
-
-  addPrecedentCommand: (command)=>
-    precedent = atom.config.get 'run-command.precedeCommandsWith'
-
-    if precedent? and !Utils.stringIsBlank(precedent)
-      @joinCommands [precedent, command]
-
-  joinCommands: (commands)=>
-    commands.join(' && ')
 
 module.exports =
   CommandRunner: CommandRunner
